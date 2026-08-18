@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>الجدول الدراسي</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== CSS Variables — Light & Dark ===== */
+        :root {
+            /* Light theme (default) */
+            --bg-body: #f6f3ed;
+            --bg-surface: #ffffff;
+            --bg-surface-2: #f0ede7;
+            --bg-panel: #ffffff;
+            --bg-panel-alt: #f0ede7;
+            --text-primary: #1a1a2e;
+            --text-secondary: #5a5a7a;
+            --text-muted: #8a8aa8;
+            --border: rgba(0, 0, 0, 0.07);
+            --border-strong: rgba(0, 0, 0, 0.12);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.09);
+            --gold: #b8943e;
+            --gold-soft: rgba(184, 148, 62, 0.12);
+            --gold-glow: rgba(184, 148, 62, 0.20);
+
+            /* Course colors */
+            --c-effl: #4a8fc7;
+            --c-effl-bg: rgba(74, 143, 199, 0.12);
+            --c-infs: #2aa88a;
+            --c-infs-bg: rgba(42, 168, 138, 0.12);
+            --c-math: #d97a3e;
+            --c-math-bg: rgba(217, 122, 62, 0.13);
+            --c-comm: #9b7fd4;
+            --c-comm-bg: rgba(155, 127, 212, 0.12);
+
+            --radius: 16px;
+            --radius-sm: 10px;
+            --transition: 0.30s ease;
+            --font: 'Cairo', sans-serif;
+            --font-serif: 'Amiri', serif;
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #12121e;
+            --bg-surface: #1c1c2e;
+            --bg-surface-2: #26263a;
+            --bg-panel: #1c1c2e;
+            --bg-panel-alt: #26263a;
+            --text-primary: #ececf0;
+            --text-secondary: #b0b0cc;
+            --text-muted: #7a7a9a;
+            --border: rgba(255, 255, 255, 0.06);
+            --border-strong: rgba(255, 255, 255, 0.10);
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.40);
+            --shadow-hover: 0 8px 40px rgba(0, 0, 0, 0.50);
+            --gold: #d4b06a;
+            --gold-soft: rgba(212, 176, 106, 0.10);
+            --gold-glow: rgba(212, 176, 106, 0.15);
+
+            --c-effl-bg: rgba(74, 143, 199, 0.18);
+            --c-infs-bg: rgba(42, 168, 138, 0.18);
+            --c-math-bg: rgba(217, 122, 62, 0.18);
+            --c-comm-bg: rgba(155, 127, 212, 0.18);
+        }
+
+        /* ===== Reset & Base ===== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-body);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 32px 20px 60px;
+            transition: background var(--transition), color var(--transition);
+            line-height: 1.5;
+        }
+
+        .wrap {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ===== Scrollbar ===== */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-surface-2);
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--text-muted);
+            border-radius: 99px;
+        }
+
+        /* ===== Theme Toggle ===== */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 99px;
+            padding: 8px 14px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
+            box-shadow: var(--shadow);
+            transition: background var(--transition), color var(--transition), border var(--transition), box-shadow var(--transition);
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.70);
+        }
+        [data-theme="dark"] .theme-toggle {
+            background: rgba(28, 28, 46, 0.80);
+            backdrop-filter: blur(8px);
+        }
+        .theme-toggle:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .theme-toggle .label {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+        @media (max-width: 640px) {
+            .theme-toggle {
+                top: 14px;
+                left: 14px;
+                padding: 6px 12px;
+                font-size: 16px;
+            }
+            .theme-toggle .label {
+                font-size: 11px;
+            }
+        }
+
+        /* ===== Header ===== */
+        header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 24px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 32px;
+            transition: border var(--transition);
+        }
+
+        .header-main .eyebrow {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .header-main h1 {
+            font-family: var(--font-serif);
+            font-size: 42px;
+            font-weight: 700;
+            margin: 0 0 4px;
+            line-height: 1.2;
+            color: var(--text-primary);
+            transition: color var(--transition);
+        }
+        .header-main .sub {
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .stats {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .stat {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 18px;
+            min-width: 80px;
+            text-align: center;
+            transition: background var(--transition), border var(--transition);
+            box-shadow: var(--shadow);
+        }
+        .stat .n {
+            font-family: var(--font-serif);
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--gold);
+            line-height: 1.2;
+        }
+        .stat .l {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        @media (max-width: 640px) {
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 16px;
+            }
+            .header-main h1 {
+                font-size: 30px;
+            }
+            .stats {
+                gap: 8px;
+            }
+            .stat {
+                flex: 1;
+                padding: 8px 12px;
+                min-width: 60px;
+            }
+            .stat .n {
+                font-size: 20px;
+            }
+        }
+
+        /* ===== Legend ===== */
+        .legend {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .tag {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            border-radius: 99px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: background var(--transition), border var(--transition), color var(--transition);
+            box-shadow: var(--shadow);
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+        .tag .code {
+            font-weight: 700;
+        }
+
+        @media (max-width: 480px) {
+            .tag {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+        }
+
+        /* ===== Timetable ===== */
+        .board-scroll {
+            overflow-x: auto;
+            padding-bottom: 8px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            transition: box-shadow var(--transition);
+        }
+        .board-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .board {
+            min-width: 880px;
+            display: grid;
+            grid-template-columns: 70px repeat(7, 1fr);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            background: var(--bg-surface);
+            transition: background var(--transition), border var(--transition);
+        }
+
+        /* Headers */
+        .head-cell {
+            background: var(--bg-panel-alt);
+            padding: 12px 4px;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            border-inline-start: 1px solid var(--border);
+            transition: background var(--transition), border var(--transition);
+        }
+        .head-cell:first-child {
+            border-inline-start: none;
+        }
+        .head-cell .day {
+            font-weight: 800;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        .head-cell .date {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            font-weight: 500;
+        }
+        .head-cell.off .day {
+            color: var(--text-muted);
+        }
+        .head-cell.time-head {
+            background: var(--bg-surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        /* Time column */
+        .time-col {
+            display: grid;
+            grid-template-rows: repeat(28, 20px);
+            background: var(--bg-surface);
+            transition: background var(--transition);
+        }
+        .time-col .tick {
+            font-size: 9.5px;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid var(--border);
+            padding-top: 2px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            transition: color var(--transition), border var(--transition);
+        }
+        .time-col .tick:first-child {
+            border-top: none;
+        }
+        .time-col .tick:nth-child(odd) {
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        /* Day columns */
+        .day-col {
+            position: relative;
+            display: grid;
+            grid-template-rows: repeat(28, 20px);
+            border-inline-start: 1px solid var(--border);
+            background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 39px, var(--border) 39px, var(--border) 40px);
+            transition: border var(--transition), background var(--transition);
+        }
+        .day-col.off {
+            background: repeating-linear-gradient(135deg, transparent 0 10px, var(--border) 10px 20px);
+            opacity: 0.4;
+        }
+
+        /* Events */
+        .event {
+            position: relative;
+            margin: 2px 4px;
+            border-radius: var(--radius-sm);
+            padding: 6px 8px;
+            font-size: 10.5px;
+            line-height: 1.3;
+            overflow: hidden;
+            border-inline-start: 3px solid var(--c);
+            background: var(--bg);
+            transition: background var(--transition), border var(--transition);
+            cursor: default;
+        }
+        .event .code {
+            font-weight: 800;
+            font-size: 11.5px;
+            display: block;
+            color: var(--text-primary);
+            transition: color var(--transition);
+        }
+        .event .kind {
+            color: var(--text-secondary);
+            font-size: 9.5px;
+            display: block;
+            margin: 1px 0;
+            font-weight: 500;
+        }
+        .event .room {
+            font-size: 9.5px;
+            color: var(--text-muted);
+            display: block;
+            font-weight: 500;
+        }
+
+        /* ===== Detail Cards ===== */
+        .section-title {
+            font-family: var(--font-serif);
+            font-size: 26px;
+            font-weight: 700;
+            margin: 44px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--text-primary);
+            transition: color var(--transition);
+        }
+        .section-title::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            transition: background var(--transition);
+        }
+
+        .day-block {
+            margin-bottom: 24px;
+        }
+        .day-block>.dname {
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--gold);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: color var(--transition);
+        }
+        .day-block>.dname .dd {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 14px;
+        }
+
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            border-top: 4px solid var(--c);
+            transition: background var(--transition), border var(--transition), box-shadow var(--transition);
+            box-shadow: var(--shadow);
+        }
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+        .card .title {
+            font-weight: 800;
+            font-size: 16px;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+            transition: color var(--transition);
+        }
+        .card .type {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+        .card .row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            margin-top: 6px;
+            color: var(--text-primary);
+            transition: color var(--transition);
+        }
+        .card .row span:first-child {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .empty-note {
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 500;
+            background: var(--bg-surface);
+            border: 1px dashed var(--border-strong);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            transition: background var(--transition), border var(--transition), color var(--transition);
+        }
+
+        /* ===== Footer ===== */
+        footer {
+            margin-top: 48px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 12px;
+            font-weight: 500;
+            border-top: 1px solid var(--border);
+            padding-top: 28px;
+            transition: color var(--transition), border var(--transition);
+        }
+
+        /* ===== Responsive tweaks ===== */
+        @media (max-width: 640px) {
+            body {
+                padding: 20px 12px 40px;
+            }
+            .board {
+                min-width: 700px;
+                grid-template-columns: 56px repeat(7, 1fr);
+            }
+            .head-cell .day {
+                font-size: 12px;
+            }
+            .head-cell .date {
+                font-size: 9px;
+            }
+            .event {
+                font-size: 9px;
+                padding: 4px 6px;
+                margin: 1px 2px;
+            }
+            .event .code {
+                font-size: 10px;
+            }
+            .event .kind,
+            .event .room {
+                font-size: 8px;
+            }
+            .time-col .tick {
+                font-size: 8px;
+            }
+            .section-title {
+                font-size: 20px;
+                margin-top: 32px;
+            }
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            .day-block>.dname {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .board {
+                min-width: 560px;
+                grid-template-columns: 44px repeat(7, 1fr);
+            }
+            .head-cell {
+                padding: 8px 2px;
+            }
+            .head-cell .day {
+                font-size: 10px;
+            }
+            .head-cell .date {
+                font-size: 8px;
+            }
+            .event {
+                font-size: 8px;
+                padding: 3px 4px;
+                border-inline-start-width: 2px;
+            }
+            .event .code {
+                font-size: 8.5px;
+            }
+            .event .kind,
+            .event .room {
+                font-size: 7px;
+            }
+            .time-col .tick {
+                font-size: 7px;
+            }
+            .stat .n {
+                font-size: 17px;
+            }
+            .stat .l {
+                font-size: 9px;
+            }
+        }
+
+        /* ===== Print ===== */
+        @media print {
+            .theme-toggle {
+                display: none !important;
+            }
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                padding: 20px !important;
+            }
+            .board,
+            .card,
+            .stat,
+            .tag,
+            .empty-note {
+                background: #fff !important;
+                border-color: #ccc !important;
+                box-shadow: none !important;
+            }
+            .head-cell {
+                background: #f5f5f5 !important;
+            }
+            .event {
+                border-color: #666 !important;
+                background: #fafafa !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .day-col {
+                background-image: repeating-linear-gradient(to bottom, transparent 0, transparent 39px, #e0e0e0 39px, #e0e0e0 40px) !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== Theme Toggle ===== -->
+    <button class="theme-toggle" id="themeToggle" aria-label="تبديل الوضع">
+        <span id="themeIcon">🌙</span>
+        <span class="label" id="themeLabel">ليلي</span>
+    </button>
+
+    <div class="wrap">
+
+        <!-- ===== Header ===== -->
+        <header>
+            <div class="header-main">
+                <div class="eyebrow">الفصل الخريفي · Fall 2026</div>
+                <h1>جدول أحمد يحيى تلخوخ</h1>
+                <div class="sub">جامعة الأمير سلطان · كلية الحاسبات</div>
+            </div>
+            <div class="stats">
+                <div class="stat"><div class="n">4</div><div class="l">مواد</div></div>
+                <div class="stat"><div class="n">9</div><div class="l">حصص</div></div>
+                <div class="stat"><div class="n">14</div><div class="l">ساعة</div></div>
+                <div class="stat"><div class="n">5</div><div class="l">أيام</div></div>
+            </div>
+        </header>
+
+        <!-- ===== Legend ===== -->
+        <div class="legend">
+            <div class="tag"><span class="dot" style="background:var(--c-effl)"></span><span class="code">EFFL 1003</span> English comm.</div>
+            <div class="tag"><span class="dot" style="background:var(--c-infs)"></span><span class="code">INFS 1101</span> Problem solving</div>
+            <div class="tag"><span class="dot" style="background:var(--c-math)"></span><span class="code">MATH 1030</span> Calculus 1</div>
+            <div class="tag"><span class="dot" style="background:var(--c-comm)"></span><span class="code">COMM 1010</span> Internship</div>
+        </div>
+
+        <!-- ===== Timetable ===== -->
+        <div class="board-scroll">
+            <div class="board">
+
+                <!-- Time header -->
+                <div class="head-cell time-head"></div>
+                <div class="head-cell"><div class="day">الأحد</div><div class="date">30 أغسطس</div></div>
+                <div class="head-cell"><div class="day">الإثنين</div><div class="date">31 أغسطس</div></div>
+                <div class="head-cell"><div class="day">الثلاثاء</div><div class="date">1 سبتمبر</div></div>
+                <div class="head-cell"><div class="day">الأربعاء</div><div class="date">2 سبتمبر</div></div>
+                <div class="head-cell"><div class="day">الخميس</div><div class="date">3 سبتمبر</div></div>
+                <div class="head-cell off"><div class="day">الجمعة</div><div class="date">4 سبتمبر</div></div>
+                <div class="head-cell off"><div class="day">السبت</div><div class="date">5 سبتمبر</div></div>
+
+                <!-- Time column -->
+                <div class="time-col">
+                    <div class="tick">08:00</div><div class="tick"></div>
+                    <div class="tick">09:00</div><div class="tick"></div>
+                    <div class="tick">10:00</div><div class="tick"></div>
+                    <div class="tick">11:00</div><div class="tick"></div>
+                    <div class="tick">12:00</div><div class="tick"></div>
+                    <div class="tick">13:00</div><div class="tick"></div>
+                    <div class="tick">14:00</div><div class="tick"></div>
+                    <div class="tick">15:00</div><div class="tick"></div>
+                    <div class="tick">16:00</div><div class="tick"></div>
+                    <div class="tick">17:00</div><div class="tick"></div>
+                    <div class="tick">18:00</div><div class="tick"></div>
+                    <div class="tick">19:00</div><div class="tick"></div>
+                    <div class="tick">20:00</div><div class="tick"></div>
+                    <div class="tick">21:00</div>
+                </div>
+
+                <!-- Sunday -->
+                <div class="day-col">
+                    <div class="event" style="--c:var(--c-effl); --bg:var(--c-effl-bg); grid-row:1/3;">
+                        <span class="code">EFFL 1003-24</span>
+                        <span class="kind">محاضرة</span>
+                        <span class="room">قاعة 10.2.01</span>
+                    </div>
+                    <div class="event" style="--c:var(--c-comm); --bg:var(--c-comm-bg); grid-row:9/13;">
+                        <span class="code">COMM 1010-45</span>
+                        <span class="kind">محاضرة</span>
+                        <span class="room">قاعة 10.1.31</span>
+                    </div>
+                    <div class="event" style="--c:var(--c-effl); --bg:var(--c-effl-bg); grid-row:25/29;">
+                        <span class="code">EFFL 1003-20</span>
+                        <span class="kind">مدرج · أونلاين</span>
+                        <span class="room">Online2</span>
+                    </div>
+                </div>
+
+                <!-- Monday -->
+                <div class="day-col">
+                    <div class="event" style="--c:var(--c-infs); --bg:var(--c-infs-bg); grid-row:1/4;">
+                        <span class="code">INFS 1101-19</span>
+                        <span class="kind">معمل</span>
+                        <span class="room">قاعة 12.2.03</span>
+                    </div>
+                    <div class="event" style="--c:var(--c-math); --bg:var(--c-math-bg); grid-row:13/16;">
+                        <span class="code">MATH 1030-2</span>
+                        <span class="kind">محاضرة</span>
+                        <span class="room">قاعة 12.1.13</span>
+                    </div>
+                    <div class="event" style="--c:var(--c-infs); --bg:var(--c-infs-bg); grid-row:17/21;">
+                        <span class="code">INFS 1101-18</span>
+                        <span class="kind">محاضرة</span>
+                        <span class="room">قاعة 01.1.04</span>
+                    </div>
+                </div>
+
+                <!-- Tuesday -->
+                <div class="day-col">
+                    <div class="event" style="--c:var(--c-comm); --bg:var(--c-comm-bg); grid-row:11/13;">
+                        <span class="code">COMM 1010-45</span>
+                        <span class="kind">محاضرة</span>
+                        <span class="room">قاعة 20.2.47</span>
+                    </div>
+                </div>
+
+                <!-- Wednesday -->
+                <div class="day-col">
+                    <div class="event" style="--c:var(--c-infs); --bg:var(--c-infs-bg); grid-row:1/4;">
+                        <span class="code">INFS 1101-19</span>
+                        <span class="kind">معمل</span>
+                        <span class="room">قاعة 12.2.03</span>
+                    </div>
+                </div>
+
+                <!-- Thursday -->
+                <div class="day-col">
+                    <div class="event" style="--c:var(--c-math); --bg:var(--c-math-bg); grid-row:4/7;">
+                        <span class="code">MATH 1030-1</span>
+                        <span class="kind">مدرج</span>
+                        <span class="room">قاعة 05.1.48</span>
+                    </div>
+                </div>
+
+                <!-- Friday -->
+                <div class="day-col off"></div>
+                <!-- Saturday -->
+                <div class="day-col off"></div>
+
+            </div>
+        </div>
+
+        <!-- ===== Detail Cards ===== -->
+        <h2 class="section-title">تفاصيل الحصص</h2>
+
+        <!-- Sunday -->
+        <div class="day-block">
+            <div class="dname">الأحد <span class="dd">30 أغسطس</span></div>
+            <div class="cards">
+                <div class="card" style="--c:var(--c-effl)">
+                    <div class="title">EFFL 1003-24</div>
+                    <div class="type">محاضرة</div>
+                    <div class="row"><span>الوقت</span><span>8:00 – 9:00 ص</span></div>
+                    <div class="row"><span>القاعة</span><span>10.2.01</span></div>
+                </div>
+                <div class="card" style="--c:var(--c-comm)">
+                    <div class="title">COMM 1010-45</div>
+                    <div class="type">محاضرة</div>
+                    <div class="row"><span>الوقت</span><span>12:00 – 2:00 م</span></div>
+                    <div class="row"><span>القاعة</span><span>10.1.31</span></div>
+                </div>
+                <div class="card" style="--c:var(--c-effl)">
+                    <div class="title">EFFL 1003-20</div>
+                    <div class="type">مدرج · دراسة عن بُعد</div>
+                    <div class="row"><span>الوقت</span><span>8:00 – 10:00 م</span></div>
+                    <div class="row"><span>القاعة</span><span>Online2</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monday -->
+        <div class="day-block">
+            <div class="dname">الإثنين <span class="dd">31 أغسطس</span></div>
+            <div class="cards">
+                <div class="card" style="--c:var(--c-infs)">
+                    <div class="title">INFS 1101-19</div>
+                    <div class="type">معمل (Laboratory)</div>
+                    <div class="row"><span>الوقت</span><span>8:00 – 9:30 ص</span></div>
+                    <div class="row"><span>القاعة</span><span>12.2.03</span></div>
+                </div>
+                <div class="card" style="--c:var(--c-math)">
+                    <div class="title">MATH 1030-2</div>
+                    <div class="type">محاضرة</div>
+                    <div class="row"><span>الوقت</span><span>2:00 – 3:30 م</span></div>
+                    <div class="row"><span>القاعة</span><span>12.1.13</span></div>
+                </div>
+                <div class="card" style="--c:var(--c-infs)">
+                    <div class="title">INFS 1101-18</div>
+                    <div class="type">محاضرة</div>
+                    <div class="row"><span>الوقت</span><span>4:00 – 6:00 م</span></div>
+                    <div class="row"><span>القاعة</span><span>01.1.04</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tuesday -->
+        <div class="day-block">
+            <div class="dname">الثلاثاء <span class="dd">1 سبتمبر</span></div>
+            <div class="cards">
+                <div class="card" style="--c:var(--c-comm)">
+                    <div class="title">COMM 1010-45</div>
+                    <div class="type">محاضرة</div>
+                    <div class="row"><span>الوقت</span><span>1:00 – 2:00 م</span></div>
+                    <div class="row"><span>القاعة</span><span>20.2.47</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wednesday -->
+        <div class="day-block">
+            <div class="dname">الأربعاء <span class="dd">2 سبتمبر</span></div>
+            <div class="cards">
+                <div class="card" style="--c:var(--c-infs)">
+                    <div class="title">INFS 1101-19</div>
+                    <div class="type">معمل (Laboratory)</div>
+                    <div class="row"><span>الوقت</span><span>8:00 – 9:30 ص</span></div>
+                    <div class="row"><span>القاعة</span><span>12.2.03</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Thursday -->
+        <div class="day-block">
+            <div class="dname">الخميس <span class="dd">3 سبتمبر</span></div>
+            <div class="cards">
+                <div class="card" style="--c:var(--c-math)">
+                    <div class="title">MATH 1030-1</div>
+                    <div class="type">مدرج (Lecture Theatre)</div>
+                    <div class="row"><span>الوقت</span><span>9:30 – 11:00 ص</span></div>
+                    <div class="row"><span>القاعة</span><span>05.1.48</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Weekend -->
+        <div class="day-block">
+            <div class="dname">الجمعة والسبت</div>
+            <div class="empty-note">🌙 لا توجد محاضرات — أيام راحة</div>
+        </div>
+
+        <footer>تم إعادة تنسيق الجدول من ملف View My Classes — الفصل الخريفي 2026</footer>
+    </div>
+
+    <script>
+        (function() {
+            const toggle = document.getElementById('themeToggle');
+            const icon = document.getElementById('themeIcon');
+            const label = document.getElementById('themeLabel');
+
+            // Check system preference
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const saved = localStorage.getItem('theme');
+
+            let currentTheme = saved || (prefersDark ? 'dark' : 'light');
+
+            function setTheme(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                currentTheme = theme;
+                localStorage.setItem('theme', theme);
+
+                if (theme === 'dark') {
+                    icon.textContent = '☀️';
+                    label.textContent = 'نهاري';
+                } else {
+                    icon.textContent = '🌙';
+                    label.textContent = 'ليلي';
+                }
+            }
+
+            setTheme(currentTheme);
+
+            toggle.addEventListener('click', () => {
+                const next = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(next);
+            });
+
+            // Listen for system changes
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                if (!localStorage.getItem('theme')) {
+                    setTheme(e.matches ? 'dark' : 'light');
+                }
+            });
+        })();
+    </script>
+
+</body>
+</html>
