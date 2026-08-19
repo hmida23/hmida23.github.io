@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>الجدول الدراسي</title>
+<title>الجدول الدراسي — أحمد يحيى تلخوخ</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -339,9 +339,8 @@
     transition: border-color .2s ease;
   }
   .gate-input:focus{ border-color: var(--gold); }
-  .gate-input.shake{
+  .gate-card.shake{
     animation: shake .35s ease;
-    border-color:#E06666;
   }
   @keyframes shake{
     0%,100%{ transform:translateX(0); }
@@ -388,206 +387,7 @@
   <span class="label" id="themeLabel">ليلي</span>
 </div>
 
-<div class="wrap gate-blur" id="mainContent">
-
-  <header>
-    <div>
-      <div class="eyebrow">الفصل الخريفي · Fall 2026</div>
-      <h1>جدول تجريبي</h1>
-      <div class="sub">جدول الحصص الأسبوعي</div>
-    </div>
-    <div class="stats">
-      <div class="stat"><div class="n">4</div><div class="l">مواد دراسية</div></div>
-      <div class="stat"><div class="n">9</div><div class="l">محاضرات/معامل</div></div>
-      <div class="stat"><div class="n">14</div><div class="l">ساعة أسبوعياً</div></div>
-      <div class="stat"><div class="n">5</div><div class="l">أيام دراسة</div></div>
-    </div>
-  </header>
-
-  <div class="legend">
-    <div class="tag"><span class="dot" style="background:var(--c-effl)"></span> EFFL 1003 — English communication 1</div>
-    <div class="tag"><span class="dot" style="background:var(--c-infs)"></span> INFS 1101 — Problem solving</div>
-    <div class="tag"><span class="dot" style="background:var(--c-math)"></span> MATH 1030 — Calculus 1</div>
-    <div class="tag"><span class="dot" style="background:var(--c-comm)"></span> COMM 1010 — Internship</div>
-  </div>
-
-  <p class="mobile-hint">📱 لعرض الجدول الشبكي الكامل، افتح الصفحة على شاشة أوسع. أدناه تفاصيل كل يوم.</p>
-
-  <div class="board-scroll">
-    <div class="board">
-      <div class="head-cell time-head"></div>
-      <div class="head-cell"><div class="day">الأحد</div><div class="date">30 أغسطس</div></div>
-      <div class="head-cell"><div class="day">الإثنين</div><div class="date">31 أغسطس</div></div>
-      <div class="head-cell"><div class="day">الثلاثاء</div><div class="date">1 سبتمبر</div></div>
-      <div class="head-cell"><div class="day">الأربعاء</div><div class="date">2 سبتمبر</div></div>
-      <div class="head-cell"><div class="day">الخميس</div><div class="date">3 سبتمبر</div></div>
-      <div class="head-cell off"><div class="day">الجمعة</div><div class="date">4 سبتمبر</div></div>
-      <div class="head-cell off"><div class="day">السبت</div><div class="date">5 سبتمبر</div></div>
-
-      <div class="time-col">
-        <div class="tick">08:00</div><div class="tick"></div>
-        <div class="tick">09:00</div><div class="tick"></div>
-        <div class="tick">10:00</div><div class="tick"></div>
-        <div class="tick">11:00</div><div class="tick"></div>
-        <div class="tick">12:00</div><div class="tick"></div>
-        <div class="tick">13:00</div><div class="tick"></div>
-        <div class="tick">14:00</div><div class="tick"></div>
-        <div class="tick">15:00</div><div class="tick"></div>
-        <div class="tick">16:00</div><div class="tick"></div>
-        <div class="tick">17:00</div><div class="tick"></div>
-        <div class="tick">18:00</div><div class="tick"></div>
-        <div class="tick">19:00</div><div class="tick"></div>
-        <div class="tick">20:00</div><div class="tick"></div>
-        <div class="tick">21:00</div>
-      </div>
-
-      <!-- Sunday -->
-      <div class="day-col">
-        <div class="event" style="--c:var(--c-effl); --bg:var(--c-effl-bg); grid-row:1/3;">
-          <span class="code">EFFL 1003-24</span><span class="kind">محاضرة</span><span class="room">قاعة 10.2.01</span>
-        </div>
-        <div class="event" style="--c:var(--c-comm); --bg:var(--c-comm-bg); grid-row:9/13;">
-          <span class="code">COMM 1010-45</span><span class="kind">محاضرة</span><span class="room">قاعة 10.1.31</span>
-        </div>
-        <div class="event" style="--c:var(--c-effl); --bg:var(--c-effl-bg); grid-row:25/29;">
-          <span class="code">EFFL 1003-20</span><span class="kind">مدرج · أونلاين</span><span class="room">Online2</span>
-        </div>
-      </div>
-
-      <!-- Monday -->
-      <div class="day-col">
-        <div class="event" style="--c:var(--c-infs); --bg:var(--c-infs-bg); grid-row:1/4;">
-          <span class="code">INFS 1101-19</span><span class="kind">معمل</span><span class="room">قاعة 12.2.03</span>
-        </div>
-        <div class="event" style="--c:var(--c-math); --bg:var(--c-math-bg); grid-row:13/16;">
-          <span class="code">MATH 1030-2</span><span class="kind">محاضرة</span><span class="room">قاعة 12.1.13</span>
-        </div>
-        <div class="event" style="--c:var(--c-infs); --bg:var(--c-infs-bg); grid-row:17/21;">
-          <span class="code">INFS 1101-18</span><span class="kind">محاضرة</span><span class="room">قاعة 01.1.04</span>
-        </div>
-      </div>
-
-      <!-- Tuesday -->
-      <div class="day-col">
-        <div class="event" style="--c:var(--c-comm); --bg:var(--c-comm-bg); grid-row:11/13;">
-          <span class="code">COMM 1010-45</span><span class="kind">محاضرة</span><span class="room">قاعة 20.2.47</span>
-        </div>
-      </div>
-
-      <!-- Wednesday -->
-      <div class="day-col">
-        <div class="event" style="--c:var(--c-infs); --bg:var(--c-infs-bg); grid-row:1/4;">
-          <span class="code">INFS 1101-19</span><span class="kind">معمل</span><span class="room">قاعة 12.2.03</span>
-        </div>
-      </div>
-
-      <!-- Thursday -->
-      <div class="day-col">
-        <div class="event" style="--c:var(--c-math); --bg:var(--c-math-bg); grid-row:4/7;">
-          <span class="code">MATH 1030-1</span><span class="kind">مدرج</span><span class="room">قاعة 05.1.48</span>
-        </div>
-      </div>
-
-      <!-- Friday -->
-      <div class="day-col off"></div>
-      <!-- Saturday -->
-      <div class="day-col off"></div>
-    </div>
-  </div>
-
-  <h2 class="section-title">تفاصيل الحصص</h2>
-
-  <div class="day-block">
-    <div class="dname">الأحد <span class="dd">30 أغسطس</span></div>
-    <div class="cards">
-      <div class="card" style="--c:var(--c-effl)">
-        <div class="title">EFFL 1003-24</div>
-        <div class="type">محاضرة</div>
-        <div class="row"><span>الوقت</span><span>8:00 – 9:00 ص</span></div>
-        <div class="row"><span>القاعة</span><span>10.2.01</span></div>
-      </div>
-      <div class="card" style="--c:var(--c-comm)">
-        <div class="title">COMM 1010-45</div>
-        <div class="type">محاضرة</div>
-        <div class="row"><span>الوقت</span><span>12:00 – 2:00 م</span></div>
-        <div class="row"><span>القاعة</span><span>10.1.31</span></div>
-      </div>
-      <div class="card" style="--c:var(--c-effl)">
-        <div class="title">EFFL 1003-20</div>
-        <div class="type">مدرج · دراسة عن بُعد</div>
-        <div class="row"><span>الوقت</span><span>8:00 – 10:00 م</span></div>
-        <div class="row"><span>القاعة</span><span>Online2</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="day-block">
-    <div class="dname">الإثنين <span class="dd">31 أغسطس</span></div>
-    <div class="cards">
-      <div class="card" style="--c:var(--c-infs)">
-        <div class="title">INFS 1101-19</div>
-        <div class="type">معمل (Laboratory)</div>
-        <div class="row"><span>الوقت</span><span>8:00 – 9:30 ص</span></div>
-        <div class="row"><span>القاعة</span><span>12.2.03</span></div>
-      </div>
-      <div class="card" style="--c:var(--c-math)">
-        <div class="title">MATH 1030-2</div>
-        <div class="type">محاضرة</div>
-        <div class="row"><span>الوقت</span><span>2:00 – 3:30 م</span></div>
-        <div class="row"><span>القاعة</span><span>12.1.13</span></div>
-      </div>
-      <div class="card" style="--c:var(--c-infs)">
-        <div class="title">INFS 1101-18</div>
-        <div class="type">محاضرة</div>
-        <div class="row"><span>الوقت</span><span>4:00 – 6:00 م</span></div>
-        <div class="row"><span>القاعة</span><span>01.1.04</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="day-block">
-    <div class="dname">الثلاثاء <span class="dd">1 سبتمبر</span></div>
-    <div class="cards">
-      <div class="card" style="--c:var(--c-comm)">
-        <div class="title">COMM 1010-45</div>
-        <div class="type">محاضرة</div>
-        <div class="row"><span>الوقت</span><span>1:00 – 2:00 م</span></div>
-        <div class="row"><span>القاعة</span><span>20.2.47</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="day-block">
-    <div class="dname">الأربعاء <span class="dd">2 سبتمبر</span></div>
-    <div class="cards">
-      <div class="card" style="--c:var(--c-infs)">
-        <div class="title">INFS 1101-19</div>
-        <div class="type">معمل (Laboratory)</div>
-        <div class="row"><span>الوقت</span><span>8:00 – 9:30 ص</span></div>
-        <div class="row"><span>القاعة</span><span>12.2.03</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="day-block">
-    <div class="dname">الخميس <span class="dd">3 سبتمبر</span></div>
-    <div class="cards">
-      <div class="card" style="--c:var(--c-math)">
-        <div class="title">MATH 1030-1</div>
-        <div class="type">مدرج (Lecture Theatre)</div>
-        <div class="row"><span>الوقت</span><span>9:30 – 11:00 ص</span></div>
-        <div class="row"><span>القاعة</span><span>05.1.48</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="day-block">
-    <div class="dname">الجمعة والسبت</div>
-    <div class="empty-note">لا توجد محاضرات — أيام راحة 🌙</div>
-  </div>
-
-  <footer>تم إعادة تنسيق الجدول من ملف View My Classes — الفصل الخريفي 2026</footer>
-</div>
+<div class="wrap gate-blur" id="mainContent"></div>
 
 <script>
   (function(){
@@ -620,40 +420,88 @@
   })();
 
   (function(){
-    var PASSWORD = 'table123';
+    // The schedule markup below is AES-256-GCM encrypted; the key is derived
+    // from the password via PBKDF2 (200,000 rounds, SHA-256) in the browser
+    // using the native Web Crypto API. Nothing readable exists in this file
+    // until the correct password is entered.
+    var ENC = {
+      salt: "5IoaS2YsKGTCbGljqDsVKw==",
+      iv: "A0swGHzdMc1fyzcA",
+      ct: "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",
+      iterations: 200000
+    };
+
     var overlay = document.getElementById('gateOverlay');
     var content = document.getElementById('mainContent');
     var input = document.getElementById('gateInput');
     var btn = document.getElementById('gateBtn');
     var error = document.getElementById('gateError');
+    var gateCard = overlay.querySelector('.gate-card');
 
-    function unlock(){
-      overlay.classList.add('hidden');
-      content.classList.remove('gate-blur');
-      try { sessionStorage.setItem('schedule-unlocked', '1'); } catch(e){}
+    function b64ToBytes(b64){
+      var bin = atob(b64);
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      return bytes;
     }
 
-    function tryUnlock(){
-      if(input.value === PASSWORD){
-        unlock();
-      } else {
+    async function deriveKey(password, saltBytes, iterations){
+      var enc = new TextEncoder();
+      var baseKey = await crypto.subtle.importKey(
+        'raw', enc.encode(password), { name: 'PBKDF2' }, false, ['deriveKey']
+      );
+      return crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt: saltBytes, iterations: iterations, hash: 'SHA-256' },
+        baseKey,
+        { name: 'AES-GCM', length: 256 },
+        false,
+        ['decrypt']
+      );
+    }
+
+    async function attemptDecrypt(password){
+      var saltBytes = b64ToBytes(ENC.salt);
+      var ivBytes = b64ToBytes(ENC.iv);
+      var ctBytes = b64ToBytes(ENC.ct);
+      var key = await deriveKey(password, saltBytes, ENC.iterations);
+      var plainBuf = await crypto.subtle.decrypt(
+        { name: 'AES-GCM', iv: ivBytes }, key, ctBytes
+      );
+      return new TextDecoder().decode(plainBuf);
+    }
+
+    function setBusy(busy){
+      btn.disabled = busy;
+      btn.textContent = busy ? 'جارٍ التحقق…' : 'فتح الجدول';
+    }
+
+    async function tryUnlock(){
+      var pwd = input.value;
+      if(!pwd){ return; }
+      setBusy(true);
+      error.textContent = '';
+      try {
+        var html = await attemptDecrypt(pwd);
+        content.innerHTML = html;
+        overlay.classList.add('hidden');
+        content.classList.remove('gate-blur');
+      } catch (e) {
         error.textContent = 'كلمة المرور غير صحيحة، حاول مرة أخرى';
-        input.classList.remove('shake');
-        void input.offsetWidth;
-        input.classList.add('shake');
+        gateCard.classList.remove('shake');
+        void gateCard.offsetWidth;
+        gateCard.classList.add('shake');
         input.value = '';
         input.focus();
+      } finally {
+        setBusy(false);
       }
     }
-
-    var already = false;
-    try { already = sessionStorage.getItem('schedule-unlocked') === '1'; } catch(e){}
-    if(already){ unlock(); }
 
     btn.addEventListener('click', tryUnlock);
     input.addEventListener('keydown', function(e){
       if(e.key === 'Enter'){ tryUnlock(); }
     });
+    input.focus();
   })();
 </script>
 </body>
